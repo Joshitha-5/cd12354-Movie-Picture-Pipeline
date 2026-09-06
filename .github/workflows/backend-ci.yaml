@@ -35,7 +35,7 @@ jobs:
         run: |
           pip install pipenv
           export PIPENV_PYTHON=$(which python)
-          pipenv install --dev
+          pipenv sync --dev
 
       - name: Run lint
         run: pipenv run lint
@@ -63,7 +63,7 @@ jobs:
         run: |
           pip install pipenv
           export PIPENV_PYTHON=$(which python)
-          pipenv install --dev
+          pipenv sync --dev
 
       - name: Run tests
         run: pipenv run test
