@@ -5,8 +5,8 @@ WORKDIR /
 RUN adduser --uid 1000 --disabled-password app
 RUN apt-get update && \
   apt-get install -y \
-  libpcre3 \
-  libpcre3-dev \
+  libpcre2-8-0 \
+  libpcre2-dev \
   build-essential \
   gcc \
   linux-libc-dev \
