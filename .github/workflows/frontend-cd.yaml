@@ -7,15 +7,6 @@ on:
       - main
     paths:
       - 'starter/frontend/**'
-name: Frontend Continuous Deployment
-
-on:
-  workflow_dispatch:
-  push:
-    branches:
-      - main
-    paths:
-      - 'starter/frontend/**'
 
 env:
   AWS_REGION: us-east-1
