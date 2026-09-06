@@ -70,6 +70,8 @@ jobs:
           pip install pipenv
           export PIPENV_PYTHON=$(which python)
           pipenv install --dev
+          pip install flake8 pytest
+          
  
       - name: Run tests
         run: pipenv run test
