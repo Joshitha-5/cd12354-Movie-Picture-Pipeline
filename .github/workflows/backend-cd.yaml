@@ -44,7 +44,9 @@ jobs:
           pipenv install --dev
 
       - name: Run lint
-        run: pipenv run lint
+        run: |
+          export PIPENV_PYTHON=$(which python)
+          pipenv run lint
 
   test:
     runs-on: ubuntu-latest
@@ -72,7 +74,9 @@ jobs:
           pipenv install --dev
 
       - name: Run tests
-        run: pipenv run test
+        run: |
+          export PIPENV_PYTHON=$(which python)
+          pipenv run test
 
   build-and-deploy:
     runs-on: ubuntu-latest
