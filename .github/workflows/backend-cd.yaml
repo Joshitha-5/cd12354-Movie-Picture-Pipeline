@@ -40,7 +40,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install pipenv
-          export PIPENV_PYTHON=$(which python)
+          echo "PIPENV_PYTHON=$(which python)" >> "$GITHUB_ENV"
           pipenv install --dev
 
       - name: Run lint
@@ -68,7 +68,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install pipenv
-          export PIPENV_PYTHON=$(which python)
+          echo "PIPENV_PYTHON=$(which python)" >> "$GITHUB_ENV"
           pipenv install --dev
 
       - name: Run tests
