@@ -29,9 +29,10 @@ jobs:
       - name: Install dependencies
         run: |
           pip install pipenv
-          echo "PIPENV_PYTHON=$(which python)" >> "$GITHUB_ENV"
           pipenv install --dev
       - name: Run lint
+        env:
+          PIPENV_PIPFILE: starter/backend/Pipfile
         run: pipenv run lint
   test:
     runs-on: ubuntu-latest
@@ -52,9 +53,10 @@ jobs:
       - name: Install dependencies
         run: |
           pip install pipenv
-          echo "PIPENV_PYTHON=$(which python)" >> "$GITHUB_ENV"
           pipenv install --dev
       - name: Run tests
+        env:
+          PIPENV_PIPFILE: starter/backend/Pipfile
         run: pipenv run test
   build:
     runs-on: ubuntu-latest
@@ -76,7 +78,6 @@ jobs:
       - name: Install dependencies
         run: |
           pip install pipenv
-          echo "PIPENV_PYTHON=$(which python)" >> "$GITHUB_ENV"
           pipenv install --dev
       - name: Build Docker image
         run: docker build -t mp-backend:${{ github.sha }} .
