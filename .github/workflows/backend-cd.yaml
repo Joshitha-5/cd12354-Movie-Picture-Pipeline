@@ -44,9 +44,7 @@ jobs:
           pipenv install --dev
 
       - name: Run lint
-        run: |
-          export PIPENV_PYTHON=$(which python)
-          pipenv run lint
+        run: pipenv run lint
 
   test:
     runs-on: ubuntu-latest
@@ -74,9 +72,7 @@ jobs:
           pipenv install --dev
 
       - name: Run tests
-        run: |
-          export PIPENV_PYTHON=$(which python)
-          pipenv run test
+        run: pipenv run test
 
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -126,3 +122,24 @@ jobs:
           kustomize edit set image backend=${{ steps.build-image.outputs.image }}
           kubectl apply -k .
           kubectl rollout status deployment/backend
+
+      - name: Verify live deployment
+        run: |
+          echo "Deployed commit SHA: ${{ github.sha }}"
+          echo "Deployed image: ${{ steps.build-image.outputs.image }}"
+          echo "Waiting for LoadBalancer hostname to become available..."
+          for i in $(seq 1 30); do
+            URL=$(kubectl get svc backend -n default -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+            if [ -n "$URL" ]; then
+              break
+            fi
+            echo "Attempt $i: not ready yet, waiting 10s..."
+            sleep 10
+          done
+          if [ -z "$URL" ]; then
+            echo "ERROR: LoadBalancer hostname never became available"
+            exit 1
+          fi
+          echo "Backend is live at: http://$URL/movies"
+          echo "---- Verifying /movies response from inside this pipeline run ----"
+          curl -sS -w "\nHTTP status: %{http_code}\n" "http://$URL/movies"
