@@ -87,4 +87,11 @@ jobs:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('starter/backend/Pipfile.lock') }}
           restore-keys: |
-            ${{ runner.os
+            ${{ runner.os }}-pip-
+      - name: Install dependencies
+        run: |
+          pip install pipenv
+          echo "PIPENV_PYTHON=$(which python)" >> "$GITHUB_ENV"
+          pipenv install --dev
+      - name: Build Docker image
+        run: docker build -t mp-backend:${{ github.sha }} .
